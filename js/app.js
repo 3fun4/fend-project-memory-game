@@ -19,6 +19,7 @@ timer.addEventListener('secondsUpdated', function (e) {
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
+
     var currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
@@ -30,48 +31,60 @@ function shuffle(array) {
     }
 
     return array;
+
 }
 
-//reset timer
+// reset timer
 function resetTimer() {
+
 	timer.stop();
 	$('#timer').html('00:00:00');
+
 }
 
-//initial the score panel
+// initial the score panel
 function initScorePanel() {
+
 	moves = 0;
 	$('.moves').text('0');
+
 }
 
-//update moves
+// update moves
 function updateMoves() {
-	moves ++;
+
+	moves++;
 	$('.moves').text(moves);
 	updateStars();
+
 }
 
-//reset stars
+// reset stars
 function resetStars() {
+
 	$('#stars li').each(function(){
 		$(this).children().removeClass('fa fa-star-o').addClass('fa fa-star');
 	});
+
 }
 
-//update stars
+// update stars
 function updateStars() {
+
 	if (moves>23) {
 		$('#stars li:nth-child(2)').children().removeClass('fa fa-star').addClass('fa fa-star-o');
 		$('#stars li:nth-child(3)').children().removeClass('fa fa-star').addClass('fa fa-star-o');
 	} else if (moves>14 && moves<=23) {
 		$('#stars li:nth-child(3)').children().removeClass('fa fa-star').addClass('fa fa-star-o');
 	}
+
 }
 
 // Initial the card deck
 function initGame() {
 
 	openCards = [];
+	matchFound = 0;
 
 	var cards = shuffle(cardList);
 
@@ -80,24 +93,27 @@ function initGame() {
 		$('.deck').append('<li class="animated card"><i class="fa '+cards[i]+'"></i></li>');
 	}
 
-	$('.deck').find('.card:not(".match, .open")').click(function(){
+	$('.deck').find('.card').click(function(){
 		clickCard(this);
 	});
 
 }
 
-//reset the game
+// reset the game
 function resetGame() {
+
 	gameStarted = false;
-	openCards = [];
-	matchFound = 0;
 	initScorePanel();
 	resetStars();
 	resetTimer();
 	initGame();
+
 }
 
-//
+/**
+ * card clicked
+ * @param {Object} card
+ */
 function clickCard(card) {
 
 	if (gameStarted == false) {
@@ -121,6 +137,7 @@ function clickCard(card) {
 
 //check whether the opened cards are matched
 function matchOpenCards() {
+
 	if (openCards[0]==openCards[1]) {
 		$('.deck').find('.card.open.show').off('click');
 		$('.deck').find('.card.open.show').removeClass('open show').addClass('match').animateCss('pulse');
@@ -129,19 +146,23 @@ function matchOpenCards() {
 		$('.deck').find('.card.open.show').removeClass('open show');
 	}
 	openCards = [];
+
 }
 
 //check whether the game is finished
 function checkWin() {
+
 	matchFound++;
 	if(matchFound == 8){
 		timer.pause();
 		showResult();
 	}
+
 }
 
 //show game result
 function showResult() {
+
 	swal({
 		allowOutsideClick:false,
 		type: 'success',
@@ -157,16 +178,15 @@ function showResult() {
 			'<span class="success-score">Moves:'+moves+'</span>'+
 			'<span class="success-score">Time:'+timer.getTimeValues().toString()+'</span>'
 	});
+
 }
 
 
 $(document).ready(function(){
 
-	openCards = [];
-	matchFound = 0;
 	initScorePanel();
 	initGame();
-	//
+
 	$('.restart').click(function(){
 		resetGame();
 	});
