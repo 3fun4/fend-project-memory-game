@@ -1,6 +1,6 @@
 # Memory Game Project
 
-###references:
+### references:
 
 - **animate.css**: https://github.com/daneden/animate.css
 - **easytimer.js**: https://github.com/albert-gonzalez/easytimer.js
